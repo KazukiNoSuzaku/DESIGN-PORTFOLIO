@@ -8,6 +8,7 @@ import Preloader from "@/components/Preloader";
 import Cursor from "@/components/Cursor";
 import Nav from "@/components/Nav";
 import GridOverlay from "@/components/GridOverlay";
+import Hud from "@/components/Hud";
 
 const display = Archivo({
   subsets: ["latin"],
@@ -40,6 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Cursor />
         <Nav />
         <GridOverlay />
+        <Hud />
         {children}
       </body>
     </html>

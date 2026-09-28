@@ -48,7 +48,7 @@ export default function Nav() {
       </nav>
       <div className="nav__time mask">
         <span className="nav__roll">
-          <Clock /> {site.timezone}
+          <Clock /> {site.timezoneLabel}
         </span>
       </div>
     </header>

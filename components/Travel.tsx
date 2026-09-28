@@ -31,7 +31,7 @@ export default function Travel() {
             start: "top top",
             end: () => `+=${distance()}`,
             pin: true,
-            scrub: 1,
+            scrub: true, // Lenis already smooths; extra lag desyncs nested triggers
             invalidateOnRefresh: true,
             onUpdate: (self) => {
               gsap.set(".travel__progress-bar", { scaleX: self.progress });
@@ -52,19 +52,34 @@ export default function Travel() {
               scrollTrigger: { trigger: card, containerAnimation: scroll, start: "left right", end: "right left", scrub: true },
             },
           );
-          // Cards already on screen when the pin starts can't use the container
-          // animation as a trigger, so they reveal as the section scrolls in.
-          const onScreen = card.offsetLeft < window.innerWidth * 0.75;
-          gsap.from(card.querySelectorAll(".place__name .mask > span, .place__meta > span"), {
-            yPercent: 110,
-            duration: 1.1,
-            ease: "expo.out",
-            stagger: 0.04,
-            scrollTrigger: onScreen
-              ? { trigger: ".travel__pin", start: "top 55%" }
-              : { trigger: card, containerAnimation: scroll, start: "left 75%" },
-          });
         });
+
+        // Caption reveals: an IntersectionObserver sees the card's real on-screen
+        // position (transforms included), so no card is missed however it arrives.
+        const reveals = new Map<Element, gsap.core.Tween>();
+        gsap.utils.toArray<HTMLElement>(".place").forEach((card) => {
+          reveals.set(
+            card,
+            gsap.from(card.querySelectorAll(".place__name .mask > span, .place__meta > span"), {
+              yPercent: 110,
+              duration: 1.1,
+              ease: "expo.out",
+              stagger: 0.04,
+              paused: true,
+            }),
+          );
+        });
+        const io = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((e) => {
+              if (!e.isIntersecting) return;
+              reveals.get(e.target)?.play();
+              io.unobserve(e.target);
+            }),
+          { threshold: 0 }, // reveal as soon as any part of the card is on screen
+        );
+        reveals.forEach((_, card) => io.observe(card));
+        return () => io.disconnect();
       });
 
       // Mobile: simple vertical parallax.
@@ -101,6 +116,8 @@ export default function Travel() {
                 label={`/travel/${p.place.toLowerCase().replace(/[^a-z]/g, "")}.jpg`}
                 className="place__photo"
                 sizes="(min-width: 900px) 50vw, 100vw"
+                revealSrc={p.hover?.src}
+                revealAlt={`${p.place}, ${p.country} — in colour`}
               />
               <div className="place__caption">
                 <div className="place__meta mono">
@@ -118,6 +135,21 @@ export default function Travel() {
                   <span className="mono">{p.country}</span>
                   {p.note && <> — {p.note}</>}
                 </p>
+                {(p.credit || p.hover?.credit) && (
+                  <p className="place__credit mono">
+                    {p.credit && (
+                      <a href={p.credit.url} target="_blank" rel="noreferrer">
+                        Photo — {p.credit.name}
+                      </a>
+                    )}
+                    {p.hover?.credit && (
+                      <a href={p.hover.credit.url} target="_blank" rel="noreferrer">
+                        Colour — {p.hover.credit.name}
+                      </a>
+                    )}
+                    <span>/ Unsplash</span>
+                  </p>
+                )}
               </div>
             </article>
           ))}

@@ -4,11 +4,13 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { setLenis } from "@/lib/scroll";
+import { signature } from "@/lib/signature";
 
 export default function SmoothScroll() {
   useEffect(() => {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
+    signature();
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 

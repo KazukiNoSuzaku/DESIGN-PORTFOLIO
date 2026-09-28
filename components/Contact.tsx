@@ -13,7 +13,7 @@ export default function Contact() {
   const big = useRef<HTMLHeadingElement>(null);
   const [copied, setCopied] = useState(false);
 
-  useFluidType(big);
+  useFluidType(big, { conserve: true });
 
   useGSAP(
     () => {
@@ -77,7 +77,7 @@ export default function Contact() {
           </ul>
 
           <div className="contact__local mono">
-            <span>Local time</span>
+            <span>Local time — {site.timezoneLabel}</span>
             <span className="contact__clock display">
               <Clock />
             </span>

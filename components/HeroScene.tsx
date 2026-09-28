@@ -76,11 +76,12 @@ void main(){
 }`;
 
 const fragmentShader = /* glsl */ `
+uniform vec3 uColor;
 varying float vAlpha;
 void main(){
   float d = length(gl_PointCoord - 0.5);
   if (d > 0.5) discard;
-  gl_FragColor = vec4(vec3(0.96), smoothstep(0.5, 0.3, d) * vAlpha);
+  gl_FragColor = vec4(uColor, smoothstep(0.5, 0.3, d) * vAlpha);
 }`;
 
 type Refs = {
@@ -124,9 +125,17 @@ function Field({ progress, mouse }: Refs) {
       uPixelRatio: { value: 1 },
       uGrid: { value: new THREE.Vector2(8, 4.5) },
       uMouse: { value: new THREE.Vector3(99, 99, 0) },
+      uColor: { value: new THREE.Color().setStyle("#efefed", THREE.LinearSRGBColorSpace) },
     }),
     [],
   );
+
+  // Points take the site's light colour (--paper).
+  useEffect(() => {
+    const paper = getComputedStyle(document.documentElement).getPropertyValue("--paper").trim();
+    // Raw shader: keep sRGB values untouched so the dots match the CSS colour exactly.
+    if (paper) material.current?.uniforms.uColor.value.setStyle(paper, THREE.LinearSRGBColorSpace);
+  }, []);
 
   useEffect(() => () => geometry.dispose(), [geometry]);
 
@@ -136,7 +145,8 @@ function Field({ progress, mouse }: Refs) {
     u.uTime.value += delta;
     u.uProgress.value += ((progress.current ?? 0) - u.uProgress.value) * 0.08;
     u.uPixelRatio.value = gl.getPixelRatio();
-    u.uRadius.value = Math.min(viewport.width, viewport.height) * 0.34;
+    // Smaller on portrait screens so the name stays the dominant element.
+    u.uRadius.value = Math.min(viewport.width, viewport.height) * (viewport.aspect < 1 ? 0.27 : 0.34);
     u.uGrid.value.set(viewport.width * 0.92, viewport.height * 0.84);
     const m = mouse.current;
     const tx = m?.active ? (m.x * viewport.width) / 2 : 99;
