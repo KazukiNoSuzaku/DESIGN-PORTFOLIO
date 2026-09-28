@@ -5,6 +5,7 @@ import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { site } from "@/content/site";
 import SectionHead from "./SectionHead";
 import Photo from "./Photo";
+import Receipt from "./Receipt";
 
 export default function Hobbies() {
   const root = useRef<HTMLElement>(null);
@@ -64,6 +65,7 @@ export default function Hobbies() {
               <div className="hobby__num display" aria-hidden="true">
                 {String(i + 1).padStart(2, "0")}
               </div>
+              {h.receipt && <Receipt data={h.receipt} tilt={-4} className="hobby__receipt" />}
               <div className="hobby__text">
                 <span className="mono hobby__kicker">{h.kicker}</span>
                 <h3 className="hobby__title display">
@@ -72,6 +74,20 @@ export default function Hobbies() {
                   </span>
                 </h3>
                 <p className="hobby__desc">{h.description}</p>
+                {(h.credit || h.hover?.credit) && (
+                  <p className="place__credit mono">
+                    {h.credit && (
+                      <a href={h.credit.url} target="_blank" rel="noreferrer">
+                        Photo — {h.credit.name}
+                      </a>
+                    )}
+                    {h.hover?.credit && (
+                      <a href={h.hover.credit.url} target="_blank" rel="noreferrer">
+                        Colour — {h.hover.credit.name}
+                      </a>
+                    )}
+                  </p>
+                )}
               </div>
               <Photo
                 src={h.src}
@@ -79,6 +95,8 @@ export default function Hobbies() {
                 label={`/hobbies/${h.title.toLowerCase().replace(/[^a-z]/g, "")}.jpg`}
                 className="hobby__photo"
                 sizes="(min-width: 900px) 40vw, 100vw"
+                revealSrc={h.hover?.src}
+                revealAlt={`${h.title}, in colour`}
               />
               <span className="hobby__shade" />
             </div>

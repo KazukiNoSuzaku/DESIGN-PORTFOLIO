@@ -28,11 +28,38 @@ export type Place = {
   orientation: "portrait" | "landscape";
 };
 
+export type ReceiptData = {
+  head: string;
+  sub: string;
+  meta: string;
+  lines: [string, string][];
+  total: [string, string];
+  foot: string;
+  code: string;
+};
+
+export type TicketData = {
+  carrier: string;
+  from: [string, string];
+  to: [string, string];
+  date: string;
+  flight: string;
+  gate: string;
+  seat: string;
+  cls: string;
+  boarding: string;
+};
+
 export type Hobby = {
   title: string;
   kicker: string;
   description: string;
   src?: string;
+  credit?: Credit;
+  /** Second, full-colour photo revealed on hover. */
+  hover?: { src: string; credit?: Credit };
+  /** Optional till receipt pinned to the card. */
+  receipt?: ReceiptData;
 };
 
 export const site = {
@@ -51,6 +78,11 @@ export const site = {
     src: "/travel/blr.jpg",
     alt: "Vidhana Soudha, Bengaluru",
     credit: { name: "Letian Zhang", url: "https://unsplash.com/photos/tuk-tuks-drive-past-a-grand-government-building-HJrZwkwa1ww" },
+  },
+  /** Portrait that fills the hero name on hover. */
+  heroPhoto: {
+    full: "/hero/self-full.jpg",
+    alt: "Kaustav Ghosh",
   },
   year: 2026,
 
@@ -94,6 +126,18 @@ export const site = {
   travel: {
     title: "Elsewhere",
     intro: "Twelve cities, seven countries — and counting. Hover a frame to see it in colour.",
+    /** Boarding pass in the section header. Placeholder details — edit freely. */
+    ticket: {
+      carrier: "Air India",
+      from: ["BLR", "Bengaluru"],
+      to: ["JFK", "New York"],
+      date: "14 MAR 24",
+      flight: "AI 175",
+      gate: "B12",
+      seat: "32A",
+      cls: "Economy",
+      boarding: "01:40",
+    } as TicketData,
     // Photos: Unsplash License (free to use); photographers credited on each card.
     places: [
       {
@@ -222,10 +266,68 @@ export const site = {
   hobbies: {
     title: "Off the clock",
     items: [
-      { title: "Photography", kicker: "35mm / black & white", description: "Street and architecture, mostly film. Looking for the grid hiding in ordinary places." },
-      { title: "Lettering", kicker: "Ink / brush / pixels", description: "Drawing letters by hand before they become fonts. A sketchbook a month." },
-      { title: "Music", kicker: "Vinyl / synths", description: "Collecting records and making loops that end up as soundtracks for motion work." },
-      { title: "Cycling", kicker: "Early mornings", description: "Long rides before the city wakes up. Best thinking time there is." },
+      {
+        title: "Gym",
+        kicker: "Iron / discipline",
+        description: "Showing up when nobody's watching. Progressive overload, applied to everything else too.",
+        src: "/hobbies/gym.jpg",
+        credit: { name: "Jason Grant", url: "https://unsplash.com/photos/a-row-of-dumbs-in-a-gym-m4Jqyv5VwqY" },
+        hover: { src: "/hobbies/gym-kg.jpg" }, // Kaustav at Gold's Gym, Electronic City
+      },
+      {
+        title: "Tennis",
+        kicker: "Baseline / weekends",
+        description: "Footwork, patience and a very honest scoreboard. Losing a point is just data.",
+        src: "/hobbies/tennis.jpg",
+        credit: { name: "Renith R", url: "https://unsplash.com/photos/woman-playing-tennis-on-court-from-above-A9VpotrPr1k" },
+        hover: { src: "/hobbies/tennis-color.jpg", credit: { name: "Andrew Heald", url: "https://unsplash.com/photos/a-man-swinging-a-tennis-racquet-on-a-tennis-court-q-lz1KZw640" } },
+      },
+      {
+        title: "Bar hopping",
+        kicker: "After dark / London",
+        description: "One pint per pub, never the same street twice. Soho after dark, from the Blue Posts to wherever the night ends up.",
+        src: "/hobbies/london-pub.jpg",
+        credit: { name: "Kristina Bekher", url: "https://unsplash.com/photos/a-dimly-lit-pub-called-blue-posts-at-night-kVTFINgYtK8" },
+        hover: { src: "/hobbies/london-pub-color.jpg", credit: { name: "Nefeli Karanikola", url: "https://unsplash.com/photos/a-night-view-of-soho-london-z0tLPP-UMZ8" } },
+        receipt: {
+          head: "THE BLUE POSTS",
+          sub: "SOHO, LONDON W1",
+          meta: "TAB 0417 · 23:48 · TABLE 6",
+          lines: [
+            ["1 × PINT, LONDON PRIDE", "£6.40"],
+            ["1 × GUINNESS", "£6.90"],
+            ["1 × NEGRONI", "£11.00"],
+            ["1 × CHIPS (SHARED)", "£4.50"],
+          ],
+          total: ["TOTAL", "£28.80"],
+          foot: "NEXT STOP: TBD\nNEVER THE SAME STREET TWICE",
+          code: "BP-0417-W1",
+        },
+      },
+      {
+        title: "League of Legends",
+        kicker: "Summoner's Rift / ranked",
+        description: "Five people, one plan, forty minutes of adapting. Macro calls on the map, micro on the keys.",
+        src: "/hobbies/league.jpg",
+        credit: { name: "Nguyễn Hứng", url: "https://unsplash.com/photos/five-young-men-in-matching-black-jackets-stand-together-njmYtDR9AxU" },
+        hover: { src: "/hobbies/league-color.jpg", credit: { name: "Jura", url: "https://unsplash.com/photos/black-flat-screen-computer-monitor-on-brown-wooden-desk-GWvfNtSyf-I" } },
+      },
+      {
+        title: "Tattoos",
+        kicker: "Ink / permanent record",
+        description: "Skin as a sketchbook that never gets thrown out. Every piece marks a chapter, and there's always room for the next one.",
+        src: "/hobbies/ink.jpg",
+        credit: { name: "Allef Vinicius", url: "https://unsplash.com/photos/person-doing-tattoo-hxNiXP498UI" },
+        hover: { src: "/hobbies/ink-color.jpg", credit: { name: "Chloe Boulos", url: "https://unsplash.com/photos/a-man-with-a-tattoo-on-his-arm-holding-a-gun--aLEVLQW43E" } },
+      },
+      {
+        title: "LARPing",
+        kicker: "Matcha / tote bag / main character",
+        description: "Oat-milk matcha in one hand, canvas tote in the other, a paperback I'll never open. Performative? Absolutely. Committed to the bit? Also yes.",
+        src: "/hobbies/tote.jpg",
+        credit: { name: "Mediamodifier", url: "https://unsplash.com/photos/a-person-sitting-on-a-chair-wHalnH-gB7U" },
+        hover: { src: "/hobbies/matcha.jpg", credit: { name: "Raymond Petrik", url: "https://unsplash.com/photos/a-person-holding-a-cup-of-green-liquid-ycgaquaaC-A" } },
+      },
     ] as Hobby[],
   },
 

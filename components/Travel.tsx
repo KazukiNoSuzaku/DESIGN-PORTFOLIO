@@ -6,6 +6,7 @@ import { formatCoords, site } from "@/content/site";
 import SectionHead from "./SectionHead";
 import Photo from "./Photo";
 import AsciiGlobe from "./AsciiGlobe";
+import Ticket from "./Ticket";
 
 export default function Travel() {
   const root = useRef<HTMLElement>(null);
@@ -104,7 +105,9 @@ export default function Travel() {
 
   return (
     <section className="travel tone-ink section" id="travel" ref={root}>
-      <SectionHead index="03" label="Travel" title={travel.title} intro={travel.intro} aside={<AsciiGlobe />} />
+      <SectionHead index="03" label="Travel" title={travel.title} intro={travel.intro} aside={<AsciiGlobe />}
+        extra={<Ticket data={travel.ticket} />}
+      />
 
       <div className="travel__pin">
         <div className="travel__track" ref={track}>

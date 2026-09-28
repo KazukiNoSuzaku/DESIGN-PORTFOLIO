@@ -3,9 +3,9 @@ import RevealText from "./RevealText";
 import Rule from "./Rule";
 import Barcode from "./Barcode";
 
-type Props = { index: string; label: string; title: string; intro?: string; aside?: ReactNode };
+type Props = { index: string; label: string; title: string; intro?: string; aside?: ReactNode; extra?: ReactNode };
 
-export default function SectionHead({ index, label, title, intro, aside }: Props) {
+export default function SectionHead({ index, label, title, intro, aside, extra }: Props) {
   return (
     <div className={`section-head grid${aside ? " has-aside" : ""}`}>
       <div className="section-head__meta mono">
@@ -23,6 +23,7 @@ export default function SectionHead({ index, label, title, intro, aside }: Props
         </RevealText>
       )}
       {aside && <div className="section-head__aside">{aside}</div>}
+      {extra && <div className="section-head__extra">{extra}</div>}
       <Rule className="section-head__rule" />
     </div>
   );
