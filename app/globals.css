@@ -179,154 +179,112 @@ button {
   will-change: transform;
 }
 
-/* ── Preloader ────────────────────────────────────────────── */
+/* ── Preloader: ensō on washi ───────────────────────────── */
 
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 100;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.preloader__canvas {
+  position: absolute;
+  inset: 0;
+}
+
+.preloader__seal {
+  --vermilion: #c23b22;
+  position: absolute;
+  z-index: 2;
+  width: clamp(44px, 4.4vw, 68px);
+  aspect-ratio: 1;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.preloader__seal svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.preloader__seal-ink {
+  fill: var(--vermilion);
+}
+
+.preloader__seal-text {
+  font-family: var(--font-display), serif;
+  font-size: 44px;
+  font-weight: 800;
+  font-variation-settings: "wdth" 75, "wght" 800;
+  letter-spacing: -0.04em;
+}
+
+.preloader__hud {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: var(--gutter);
-  background: var(--ink);
-  color: var(--paper);
-  clip-path: inset(0% 0% 0% 0%);
+  pointer-events: none;
 }
 
-.preloader__meta {
-  display: flex;
-  justify-content: space-between;
-  overflow: hidden;
-  color: var(--mute);
-}
-
-.preloader__meta > * {
+.preloader__hud .mask > * {
   display: inline-block;
 }
 
-.preloader__foot {
+.preloader__top,
+.preloader__bottom {
   display: flex;
+  justify-content: space-between;
   align-items: flex-end;
   gap: var(--gutter);
 }
 
-.preloader__track {
-  flex: 1;
-  height: 1px;
-  margin-bottom: 2vw;
-  background: var(--line);
+.preloader__top {
+  align-items: flex-start;
 }
 
-.preloader__bar {
-  height: 100%;
-  background: var(--paper);
-  transform: scaleX(0);
-  transform-origin: left;
-}
-
-.preloader__countwrap {
-  overflow: hidden;
-}
-
-.preloader__count {
-  display: inline-block;
-  font-size: min(17vw, 27vh);
-  line-height: 0.8;
-  font-variation-settings: "wdth" 125, "wght" 900;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: -0.05em;
-}
-
-/* City flash stage: index · frame · caption */
-.preloader__stage {
-  flex: 1;
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  column-gap: var(--gutter);
-  align-items: center;
-  min-height: 0;
-  padding-block: 2vh;
-}
-
-.preloader__list {
-  grid-column: 1 / 4;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  color: var(--mute);
-  font-size: 10px;
-}
-
-.preloader__row {
-  display: block;
-  transition: color 0.15s linear;
-}
-
-.preloader__row > span {
-  display: inline-block;
-}
-
-.preloader__row-n {
-  display: inline-block;
-  width: 3.2em;
-  opacity: 0.6;
-  transition: transform 0.2s ease;
-}
-
-.preloader__row.is-active {
-  color: var(--fg);
-}
-
-.preloader__row.is-active .preloader__row-n {
-  opacity: 1;
-  transform: translateX(0.6em);
-}
-
-.preloader__frame {
-  grid-column: 5 / 9;
-  justify-self: center;
-  position: relative;
-  width: min(22vw, 36vh);
-  aspect-ratio: 4 / 5;
-  clip-path: inset(0% 0% 0% 0%);
-  will-change: transform;
-}
-
-.preloader__frame .photo__inner {
-  inset: 0;
-}
-
-.preloader__corner {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 3;
-  font-size: 9px;
-  color: var(--paper);
-  mix-blend-mode: difference;
-}
-
-.preloader__info {
-  grid-column: 9 / 13;
+.preloader__id {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  color: var(--mute);
 }
 
-.preloader__info .mask > span {
-  display: inline-block;
+.preloader__name {
+  font-size: 14px;
+  font-variation-settings: "wdth" 90, "wght" 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
 }
 
-.preloader__city {
-  color: var(--fg);
-  font-size: clamp(44px, 5.2vw, 104px);
-  line-height: 0.84;
+.preloader__hud .mono {
+  color: color-mix(in srgb, var(--ink) 62%, transparent);
 }
 
-.preloader__coords {
+.preloader__vertical {
+  position: absolute;
+  top: 50%;
+  right: var(--gutter);
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  font-family: "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", serif;
+  font-size: 15px;
+  letter-spacing: 0.5em;
+  color: color-mix(in srgb, var(--ink) 55%, transparent);
+}
+
+.preloader__count {
+  font-size: min(7vw, 11vh);
+  line-height: 0.8;
+  font-variation-settings: "wdth" 85, "wght" 300;
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
 }
 
 /* ── Cursor ───────────────────────────────────────────────── */
@@ -674,48 +632,6 @@ html.nav-paper .nav {
 
 .hero__first { align-self: flex-start; font-size: 20.4vw; }
 .hero__last { align-self: flex-end; font-size: 27.6vw; }
-
-/* ── Marquee ──────────────────────────────────────────────── */
-
-.marquee {
-  overflow: hidden;
-  padding-block: clamp(20px, 2.4vw, 44px);
-  border-block: 1px solid var(--line);
-}
-
-.marquee__track {
-  display: flex;
-  width: max-content;
-  will-change: transform;
-}
-
-.marquee__group {
-  display: flex;
-}
-
-.marquee__item {
-  display: flex;
-  align-items: center;
-  gap: 0.35em;
-  padding-right: 0.35em;
-  font-size: clamp(52px, 8.5vw, 168px);
-  line-height: 0.9;
-  font-variation-settings: "wdth" 62, "wght" 800;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  white-space: nowrap;
-}
-
-.marquee__item.is-outline {
-  color: transparent;
-  -webkit-text-stroke: 1.2px var(--fg);
-}
-
-.marquee__star {
-  font-size: 0.4em;
-  color: var(--fg);
-  -webkit-text-stroke: 0;
-}
 
 /* ── Section head ─────────────────────────────────────────── */
 
@@ -1332,11 +1248,9 @@ html.nav-paper .nav {
 /* ── Responsive ───────────────────────────────────────────── */
 
 @media (max-width: 899px) {
-  .preloader__stage { display: flex; flex-direction: column; justify-content: center; gap: 20px; }
-  .preloader__list { display: none; }
-  .preloader__frame { width: min(58vw, 34vh); }
-  .preloader__info { align-items: center; text-align: center; }
-  .preloader__city { font-size: 11vw; }
+  .preloader__top > :nth-child(2),
+  .preloader__vertical { display: none; }
+  .preloader__count { font-size: 15vw; }
 
   .grid,
   .nav {

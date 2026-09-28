@@ -46,6 +46,12 @@ export const site = {
   coords: "12.9716° N, 77.5946° E", // Bengaluru
   timezone: "Asia/Kolkata",
   timezoneLabel: "IST",
+  /** Home photo — the preloader lands here and zooms to full screen. */
+  homePhoto: {
+    src: "/travel/blr.jpg",
+    alt: "Vidhana Soudha, Bengaluru",
+    credit: { name: "Letian Zhang", url: "https://unsplash.com/photos/tuk-tuks-drive-past-a-grand-government-building-HJrZwkwa1ww" },
+  },
   year: 2026,
 
   disciplines: ["Adapt", "Overcome", "Align", "Brand", "Motion", "3D", "Creative code", "Typography"],
