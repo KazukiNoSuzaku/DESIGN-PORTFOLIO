@@ -68,7 +68,7 @@ export const site = {
   role: "Visual designer — brand, motion, 3D & code",
   intro:
     "I design identities that move and build the interfaces they live in. Grids, type and a lot of shaders.",
-  tagline: "Adapt, Overcome and Align",
+  tagline: "Adapt, Improvise and Align",
   location: "BLR, India",
   coords: "12.9716° N, 77.5946° E", // Bengaluru
   timezone: "Asia/Kolkata",
@@ -79,14 +79,9 @@ export const site = {
     alt: "Vidhana Soudha, Bengaluru",
     credit: { name: "Letian Zhang", url: "https://unsplash.com/photos/tuk-tuks-drive-past-a-grand-government-building-HJrZwkwa1ww" },
   },
-  /** Portrait that fills the hero name on hover. */
-  heroPhoto: {
-    full: "/hero/self-full.jpg",
-    alt: "Kaustav Ghosh",
-  },
   year: 2026,
 
-  disciplines: ["Adapt", "Overcome", "Align", "Brand", "Motion", "3D", "Creative code", "Typography"],
+  disciplines: ["Adapt", "Improvise", "Align", "Brand", "Motion", "3D", "Creative code", "Typography"],
 
   academia: {
     title: "Academia",

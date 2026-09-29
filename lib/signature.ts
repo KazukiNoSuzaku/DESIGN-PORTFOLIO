@@ -11,7 +11,7 @@ export function signature() {
  ██║ ██╔╝██╔════╝     ${site.name.first} ${site.name.last}
  █████╔╝ ██║  ███╗    ${site.role}
  ██╔═██╗ ██║   ██║
- ██║  ██╗╚██████╔╝    ADAPT / OVERCOME / ALIGN
+ ██║  ██╗╚██████╔╝    ADAPT / IMPROVISE / ALIGN
  ╚═╝  ╚═╝ ╚═════╝     ${site.contact.email}
 `;
   console.log(`%c${art}`, "font-family: monospace; line-height: 1.1;");

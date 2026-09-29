@@ -7,10 +7,10 @@ import { scrollToTarget } from "@/lib/scroll";
 import { site } from "@/content/site";
 import Clock from "./Clock";
 
-// "Adapt, Overcome and Align" → three stepped lines.
-const STEPS = ["Adapt,", "Overcome", "and Align"];
+// "Adapt, Improvise and Align" → three stepped lines.
+const STEPS = ["Adapt,", "Improvise", "and Align"];
 
-/** Size the name so that, once aligned, it spans the content width exactly. */
+/** Size the name so that, once aligned, it spans ~9 of 12 columns (full width on mobile). */
 function useFitName(ref: React.RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     const el = ref.current;
@@ -18,9 +18,11 @@ function useFitName(ref: React.RefObject<HTMLElement | null>) {
     const fit = () => {
       const box = el.parentElement!;
       const cs = getComputedStyle(box);
-      const avail = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const inner = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
+      const avail = inner * (window.innerWidth < 900 ? 1 : 0.72); // desktop: ~9 of 12 columns
+      const word = el.firstElementChild as HTMLElement; // the inline-block word, not the full-width h1
       el.style.fontSize = "100px";
-      el.style.fontSize = `${Math.min((99 * avail) / el.scrollWidth, (window.innerHeight * 0.4) / 0.8)}px`;
+      el.style.fontSize = `${Math.min((99 * avail) / word.offsetWidth, (window.innerHeight * 0.4) / 0.8)}px`;
     };
     fit();
     document.fonts?.ready.then(fit);
@@ -38,9 +40,7 @@ function useFitName(ref: React.RefObject<HTMLElement | null>) {
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
   const name = useRef<HTMLHeadingElement>(null);
-  const fill = useRef<HTMLSpanElement>(null);
   const readout = useRef<HTMLSpanElement>(null);
-  const open = useRef(false);
 
   useFitName(name);
 
@@ -93,35 +93,9 @@ export default function Hero() {
     { scope: root },
   );
 
-  // Hover (tap on touch): the photo opens inside the letters from the pointer.
-  const reveal = (show: boolean, e: React.PointerEvent | React.MouseEvent) => {
-    const el = fill.current;
-    if (!el || open.current === show) return;
-    open.current = show;
-    const r = el.getBoundingClientRect();
-    gsap.set(el, { "--rx": `${((e.clientX - r.left) / r.width) * 100}%`, "--ry": `${((e.clientY - r.top) / r.height) * 100}%` });
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    gsap.to(el, { "--r": show ? "120%" : "0%", duration: reduce ? 0 : show ? 1 : 0.7, ease: show ? "expo.out" : "expo.inOut", overwrite: "auto" });
-  };
-
-  const drift = (e: React.PointerEvent) => {
-    const el = fill.current;
-    if (!el || e.pointerType !== "mouse") return;
-    const r = el.getBoundingClientRect();
-    const x = (e.clientX - r.left) / r.width;
-    const y = (e.clientY - r.top) / r.height;
-    gsap.to(el, { "--px": `${40 + x * 20}%`, "--py": `${30 + y * 35}%`, duration: 0.8, ease: "power3.out", overwrite: "auto" });
-  };
-
   return (
     <section className="hero tone-ink" id="index" ref={root}>
       <div className="hero__sticky">
-        <div className="hero__cols grid" aria-hidden="true">
-          {Array.from({ length: 12 }, (_, i) => (
-            <span key={i} />
-          ))}
-        </div>
-
         <div className="hero__facts grid mono">
           <span className="hero__fade">{site.role.split("—")[0].trim()}</span>
           <span className="hero__fade">{site.location}</span>
@@ -145,23 +119,9 @@ export default function Hero() {
         </p>
 
         <div className="hero__foot">
-          <h1
-            className="hero__name display"
-            ref={name}
-            aria-label={`${site.name.first} ${site.name.last}`}
-            data-cursor="Hi"
-            onPointerEnter={(e) => e.pointerType === "mouse" && reveal(true, e)}
-            onPointerLeave={(e) => e.pointerType === "mouse" && reveal(false, e)}
-            onPointerMove={drift}
-            onClick={(e) => {
-              if (window.matchMedia("(hover: none)").matches) reveal(!open.current, e);
-            }}
-          >
+          <h1 className="hero__name display" ref={name} aria-label={`${site.name.first} ${site.name.last}`}>
             <span className="hero__rise hero__word" aria-hidden="true">
               {site.name.first}
-              <span className="hero__fill" ref={fill} style={{ "--img": `url(${site.heroPhoto.full})` } as React.CSSProperties}>
-                {site.name.first}
-              </span>
             </span>
           </h1>
         </div>
