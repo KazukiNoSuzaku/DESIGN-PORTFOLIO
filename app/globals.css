@@ -295,11 +295,6 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-.preloader__credit {
-  margin-top: 10px;
-  font-size: 9px;
-  opacity: 0.7;
-}
 
 .preloader__foot {
   display: flex;
@@ -938,22 +933,6 @@ html.nav-paper .nav {
   max-width: 34ch;
   font-size: 15px;
   color: var(--mute);
-}
-
-.place__credit {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0 1.2em;
-  font-size: 9.5px;
-  color: var(--mute);
-}
-
-.place__credit a {
-  transition: color 0.3s ease;
-}
-
-.place__credit a:hover {
-  color: var(--fg);
 }
 
 .place-end {

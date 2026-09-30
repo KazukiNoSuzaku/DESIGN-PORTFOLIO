@@ -133,7 +133,7 @@ export const site = {
       cls: "Economy",
       boarding: "01:40",
     } as TicketData,
-    // Photos: Unsplash License (free to use); photographers credited on each card.
+    // Placeholder photos from Unsplash (free to use, no attribution required) — replace with your own.
     places: [
       {
         place: "New York",

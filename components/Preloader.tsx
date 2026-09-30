@@ -21,7 +21,6 @@ export default function Preloader() {
   const city = useRef<HTMLSpanElement>(null);
   const country = useRef<HTMLSpanElement>(null);
   const coords = useRef<HTMLSpanElement>(null);
-  const credit = useRef<HTMLSpanElement>(null);
 
   useGSAP(
     () => {
@@ -57,7 +56,6 @@ export default function Preloader() {
         if (city.current) city.current.textContent = site.location.split(",")[0];
         if (country.current) country.current.textContent = site.location.split(",").slice(1).join(",").trim();
         if (coords.current) coords.current.textContent = site.coords;
-        if (credit.current) credit.current.textContent = `Photo — ${site.homePhoto.credit.name} / Unsplash`;
         // Cut to the home shot; this is the one that zooms to full screen.
         imgs.forEach((img) => (img.style.opacity = img.classList.contains("is-home") ? "1" : "0"));
       };
@@ -187,9 +185,6 @@ export default function Preloader() {
           </span>
           <span className="mask mono preloader__coords">
             <span ref={coords}>{formatCoords(places[0].lat, places[0].lon)}</span>
-          </span>
-          <span className="mask mono preloader__credit">
-            <span ref={credit}>&nbsp;</span>
           </span>
         </div>
       </div>

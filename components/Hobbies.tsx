@@ -74,20 +74,6 @@ export default function Hobbies() {
                   </span>
                 </h3>
                 <p className="hobby__desc">{h.description}</p>
-                {(h.credit || h.hover?.credit) && (
-                  <p className="place__credit mono">
-                    {h.credit && (
-                      <a href={h.credit.url} target="_blank" rel="noreferrer">
-                        Photo — {h.credit.name}
-                      </a>
-                    )}
-                    {h.hover?.credit && (
-                      <a href={h.hover.credit.url} target="_blank" rel="noreferrer">
-                        Colour — {h.hover.credit.name}
-                      </a>
-                    )}
-                  </p>
-                )}
               </div>
               <Photo
                 src={h.src}

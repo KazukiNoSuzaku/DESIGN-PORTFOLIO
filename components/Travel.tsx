@@ -138,21 +138,6 @@ export default function Travel() {
                   <span className="mono">{p.country}</span>
                   {p.note && <> — {p.note}</>}
                 </p>
-                {(p.credit || p.hover?.credit) && (
-                  <p className="place__credit mono">
-                    {p.credit && (
-                      <a href={p.credit.url} target="_blank" rel="noreferrer">
-                        Photo — {p.credit.name}
-                      </a>
-                    )}
-                    {p.hover?.credit && (
-                      <a href={p.hover.credit.url} target="_blank" rel="noreferrer">
-                        Colour — {p.hover.credit.name}
-                      </a>
-                    )}
-                    <span>/ Unsplash</span>
-                  </p>
-                )}
               </div>
             </article>
           ))}
