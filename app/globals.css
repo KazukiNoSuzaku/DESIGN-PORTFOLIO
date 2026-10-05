@@ -482,101 +482,85 @@ html.nav-paper .nav {
   border-inline: 1px solid rgb(255 255 255 / 0.18);
 }
 
-/* ── Hero ─────────────────────────────────────────────────── */
-/* --k runs 1 → 0 on scroll: stepped + bleeding → aligned + fitted. */
+/* ── Hero (Swiss) ─────────────────────────────────────────── */
 
 .hero {
-  --k: 1;
-  --col: calc((100vw - var(--gutter)) / 12);
   position: relative;
-  height: 220vh;
-}
-
-.hero__sticky {
-  position: sticky;
-  top: 0;
   display: flex;
   flex-direction: column;
   height: 100vh;
   height: 100svh;
-  min-height: 560px;
-  padding-top: 88px;
+  min-height: 600px;
+  padding: 104px 0 var(--gutter);
   overflow: hidden;
 }
 
-.hero__facts {
-  position: relative;
-  margin-inline: var(--gutter);
-  padding: 0 0 14px;
-  border-bottom: 1px solid var(--line);
+.hero__grid {
+  flex: 1;
+  align-items: start;
 }
 
-.hero__facts > :nth-child(1) { grid-column: 1 / 4; }
-.hero__facts > :nth-child(2) { grid-column: 4 / 7; }
-.hero__facts > :nth-child(3) { grid-column: 7 / 10; }
-.hero__facts > :nth-child(4) { grid-column: 10 / 13; justify-self: end; }
-
-.hero__steps {
-  position: relative;
+.hero__name {
+  grid-column: 1 / 10;
   display: flex;
   flex-direction: column;
-  margin: auto 0 2vw;
-  padding-inline: var(--gutter);
-  font-size: clamp(44px, 7.2vw, 132px);
+  margin: 0;
+  font-size: clamp(72px, 14.5vw, 260px);
+  font-variation-settings: "wdth" 100, "wght" 700;
   line-height: 0.86;
+  letter-spacing: -0.05em;
 }
 
-.hero__step {
-  display: block;
-  transform: translateX(calc(var(--col) * var(--n) * 3 * var(--k)));
-  will-change: transform;
+.hero__name .mask {
+  padding-bottom: 0.04em; /* keep descenders inside the mask */
 }
 
-.hero__step sup {
-  display: inline-block;
-  margin-right: 0.9em;
-  font-size: 11px;
-  vertical-align: top;
-  letter-spacing: 0.02em;
+.hero__facts {
+  grid-column: 10 / 13;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin: 0.8vw 0 0;
+}
+
+.hero__facts dt {
   color: var(--mute);
-  transform: translateY(0.6em);
+}
+
+.hero__facts dd {
+  margin: 2px 0 0;
+  font-size: clamp(15px, 1.15vw, 19px);
+  font-variation-settings: "wdth" 100, "wght" 500;
 }
 
 .hero__foot {
   position: relative;
-  padding: 0 var(--gutter) var(--gutter);
+  align-items: end;
+  padding-top: 16px;
 }
 
-.hero__name {
-  margin: 0;
-  overflow: hidden;
-  line-height: 0.8;
-  white-space: nowrap;
-  letter-spacing: -0.04em;
-  padding-bottom: 0.02em;
-  transform-origin: 0% 100%;
-  transform: translateY(calc(var(--k) * 10%)) scale(calc(1 + var(--k) * 0.12));
-}
-
-.hero__word {
-  position: relative;
-  display: inline-block;
-}
-
-.hero__scroll {
+.hero__rule {
   position: absolute;
-  top: 120px;
+  top: 0;
+  left: var(--gutter);
   right: var(--gutter);
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--mute);
-  cursor: pointer;
-  transition: color 0.3s ease;
+  height: 1.5px;
+  background: var(--fg);
+  transform-origin: left;
 }
 
-.hero__scroll:hover {
-  color: var(--fg);
+.hero__tag {
+  grid-column: 1 / 9;
+  margin: 0;
+  font-size: clamp(24px, 2.6vw, 46px);
+  font-variation-settings: "wdth" 100, "wght" 500;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.hero__idx {
+  grid-column: 10 / 13;
+  justify-self: end;
 }
 
 /* ── Section head ─────────────────────────────────────────── */
@@ -1160,14 +1144,11 @@ html.nav-paper .nav {
   .nav__num { opacity: 1; margin: 0; }
   .nav__time { display: none; }
 
-  .hero { height: 200vh; }
-  .hero__sticky { padding-top: 80px; }
-  .hero__facts > :nth-child(n) { grid-column: span 6; justify-self: start; }
-  .hero__facts > :nth-child(n + 3) { display: none; }
-  .hero__steps { font-size: 16vw; margin-bottom: 6vw; }
-  .hero__step { transform: translateX(calc(var(--col) * var(--n) * 2 * var(--k))); }
-  .hero__name { transform: translateY(calc(var(--k) * 8%)) scale(calc(1 + var(--k) * 0.1)); }
-  .hero__scroll { top: 134px; }
+  .hero { padding-top: 96px; }
+  .hero__name { grid-column: 1 / -1; font-size: 21vw; }
+  .hero__facts { grid-column: 1 / -1; margin: 32px 0; }
+  .hero__tag { grid-column: 1 / -1; font-size: 7vw; }
+  .hero__idx { grid-column: 1 / -1; justify-self: start; margin-top: 14px; }
 
   .section-head__meta { grid-column: 1 / -1; flex-direction: row; gap: 1em; }
   .section-head__title,

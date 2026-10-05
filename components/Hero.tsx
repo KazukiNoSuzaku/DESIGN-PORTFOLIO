@@ -1,134 +1,73 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
+import { useRef } from "react";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { onIntroDone } from "@/lib/intro";
-import { scrollToTarget } from "@/lib/scroll";
 import { site } from "@/content/site";
 import Clock from "./Clock";
 
-// "Adapt, Improvise and Align" → three stepped lines.
-const STEPS = ["Adapt,", "Improvise", "and Align"];
-
-/** Size the name so that, once aligned, it spans ~9 of 12 columns (full width on mobile). */
-function useFitName(ref: React.RefObject<HTMLElement | null>) {
-  useLayoutEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const fit = () => {
-      const box = el.parentElement!;
-      const cs = getComputedStyle(box);
-      const inner = box.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight);
-      const avail = inner * (window.innerWidth < 900 ? 1 : 0.72); // desktop: ~9 of 12 columns
-      const word = el.firstElementChild as HTMLElement; // the inline-block word, not the full-width h1
-      el.style.fontSize = "100px";
-      el.style.fontSize = `${Math.min((99 * avail) / word.offsetWidth, (window.innerHeight * 0.4) / 0.8)}px`;
-    };
-    fit();
-    document.fonts?.ready.then(fit);
-    window.addEventListener("resize", fit);
-    return () => window.removeEventListener("resize", fit);
-  }, [ref]);
-}
-
-/**
- * Swiss poster hero. It opens misaligned — tagline stepped across the grid,
- * name oversized and bleeding off the edges — and scrolling pulls everything
- * into one flush-left column: the page literally aligns.
- * One CSS variable drives it all: --k (1 = stepped, 0 = aligned).
- */
+/** Swiss hero: the name, three facts, one rule, the tagline. Nothing else. */
 export default function Hero() {
   const root = useRef<HTMLElement>(null);
-  const name = useRef<HTMLHeadingElement>(null);
-  const readout = useRef<HTMLSpanElement>(null);
-
-  useFitName(name);
 
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-
       mm.add(MOTION_OK, () => {
         // Resolve now: the intro callback fires inside the preloader's GSAP context.
         const q = gsap.utils.selector(root);
-        const rise = q(".hero__rise");
+        const lines = q(".hero__line");
         const fades = q(".hero__fade");
-        gsap.set(rise, { yPercent: 110 });
-        gsap.set(fades, { autoAlpha: 0, y: 16 });
+        const rule = q(".hero__rule");
+        gsap.set(lines, { yPercent: 105 });
+        gsap.set(fades, { autoAlpha: 0, y: 12 });
+        gsap.set(rule, { scaleX: 0 });
 
-        const off = onIntroDone(() => {
+        return onIntroDone(() => {
           gsap
-            .timeline({ delay: 0.3 })
-            .to(rise, { yPercent: 0, duration: 1.5, ease: "expo.out", stagger: 0.08 })
-            .to(fades, { autoAlpha: 1, y: 0, duration: 1, ease: "expo.out", stagger: 0.05 }, 0.4);
+            .timeline({ delay: 0.25 })
+            .to(lines, { yPercent: 0, duration: 1.4, ease: "expo.out", stagger: 0.09 })
+            .to(rule, { scaleX: 1, duration: 1.4, ease: "expo.inOut" }, 0.2)
+            .to(fades, { autoAlpha: 1, y: 0, duration: 0.9, ease: "expo.out", stagger: 0.05 }, 0.45);
         });
-
-        gsap.fromTo(
-          root.current,
-          { "--k": 1 },
-          {
-            "--k": 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: root.current,
-              start: "top top",
-              end: "bottom bottom",
-              scrub: true,
-              onUpdate: (self) => {
-                if (readout.current) readout.current.textContent = String(Math.round(self.progress * 100)).padStart(3, "0");
-              },
-            },
-          },
-        );
-
-        return off;
       });
-
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(root.current, { "--k": 0 });
-      });
-
       return () => mm.revert();
     },
     { scope: root },
   );
 
   return (
-    <section className="hero tone-ink" id="index" ref={root}>
-      <div className="hero__sticky">
-        <div className="hero__facts grid mono">
-          <span className="hero__fade">{site.role}</span>
-          <span className="hero__fade">{site.location}</span>
-          <span className="hero__fade">
-            <Clock /> {site.timezoneLabel}
-          </span>
-          <span className="hero__fade">Index / {site.year}</span>
-        </div>
-
-        <p className="hero__steps display" aria-label={site.tagline}>
-          {STEPS.map((w, i) => (
-            <span className="hero__step" key={w} style={{ "--n": i } as React.CSSProperties} aria-hidden="true">
-              <span className="mask">
-                <span className="hero__rise">
-                  <sup className="mono">0{i + 1}</sup>
-                  {w}
-                </span>
-              </span>
+    <section className="hero tone-paper" id="index" ref={root}>
+      <div className="hero__grid grid">
+        <h1 className="hero__name" aria-label={`${site.name.first} ${site.name.last}`}>
+          {[site.name.first, site.name.last].map((w) => (
+            <span className="mask" key={w} aria-hidden="true">
+              <span className="hero__line">{w}</span>
             </span>
           ))}
-        </p>
+        </h1>
+        <dl className="hero__facts">
+          <div className="hero__fade">
+            <dt className="mono">Role</dt>
+            <dd>{site.role}</dd>
+          </div>
+          <div className="hero__fade">
+            <dt className="mono">Based</dt>
+            <dd>Bengaluru, India</dd>
+          </div>
+          <div className="hero__fade">
+            <dt className="mono">Local time</dt>
+            <dd>
+              <Clock /> {site.timezoneLabel}
+            </dd>
+          </div>
+        </dl>
+      </div>
 
-        <div className="hero__foot">
-          <h1 className="hero__name display" ref={name} aria-label={`${site.name.first} ${site.name.last}`}>
-            <span className="hero__rise hero__word" aria-hidden="true">
-              {site.name.first}
-            </span>
-          </h1>
-        </div>
-
-        <button className="hero__scroll hero__fade mono" data-cursor="Scroll" onClick={() => scrollToTarget("#academia")}>
-          Scroll to align — <span ref={readout}>000</span>%
-        </button>
+      <div className="hero__foot grid">
+        <span className="hero__rule" aria-hidden="true" />
+        <p className="hero__tag hero__fade">{site.tagline}.</p>
+        <span className="hero__idx hero__fade mono">Index — 01 / 05</span>
       </div>
     </section>
   );
