@@ -97,7 +97,7 @@ export default function Hero() {
     <section className="hero tone-ink" id="index" ref={root}>
       <div className="hero__sticky">
         <div className="hero__facts grid mono">
-          <span className="hero__fade">{site.role.split("—")[0].trim()}</span>
+          <span className="hero__fade">{site.role}</span>
           <span className="hero__fade">{site.location}</span>
           <span className="hero__fade">
             <Clock /> {site.timezoneLabel}

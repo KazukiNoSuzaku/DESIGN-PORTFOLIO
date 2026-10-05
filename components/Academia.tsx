@@ -14,7 +14,7 @@ export default function Academia() {
     () => {
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
-        gsap.utils.toArray<HTMLElement>(".edu__row, .honours__item").forEach((row) => {
+        gsap.utils.toArray<HTMLElement>(".edu__row").forEach((row) => {
           gsap.from(row.querySelectorAll(".cell > span"), {
             yPercent: 110,
             duration: 1.2,
@@ -44,7 +44,7 @@ export default function Academia() {
 
   return (
     <section className="academia tone-paper section" id="academia" ref={root}>
-      <SectionHead index="02" label="Education & honours" title={academia.title} intro={academia.intro} />
+      <SectionHead index="02" label="Education" title={academia.title} intro={academia.intro} />
 
       <div className="edu">
         <div className="edu__head grid mono" aria-hidden="true">
@@ -60,7 +60,7 @@ export default function Academia() {
               <Rule />
               <span className="edu__fill" />
               <span className="edu__ghost display" aria-hidden="true">
-                {e.years.match(/\d{4}/)?.[0]}
+                {e.years.match(/\d{4}/g)?.at(-1)}
               </span>
               <div className="edu__cells grid">
                 <span className="cell c-no mono"><span>{String(i + 1).padStart(2, "0")}</span></span>
@@ -75,22 +75,6 @@ export default function Academia() {
         <Rule />
       </div>
 
-      <div className="honours grid">
-        <div className="honours__label mono">
-          <span>Honours</span>
-          <span>({String(academia.honours.length).padStart(2, "0")})</span>
-        </div>
-        <ul className="honours__list">
-          {academia.honours.map((h, i) => (
-            <li className="honours__item" key={i}>
-              <span className="cell mono"><span>{h.year}</span></span>
-              <span className="cell honours__title"><span>{h.title}</span></span>
-              <span className="cell mono honours__org"><span>{h.org}</span></span>
-              <Rule />
-            </li>
-          ))}
-        </ul>
-      </div>
     </section>
   );
 }

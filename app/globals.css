@@ -825,41 +825,6 @@ html.nav-paper .nav {
   font-size: clamp(14px, 1.05vw, 17px);
 }
 
-.honours {
-  margin-top: clamp(80px, 10vw, 160px);
-}
-
-.honours__label {
-  grid-column: 1 / 4;
-  display: flex;
-  gap: 1em;
-  color: var(--mute);
-}
-
-.honours__list {
-  grid-column: 4 / 13;
-}
-
-.honours__item {
-  display: grid;
-  grid-template-columns: minmax(64px, 8rem) 1fr auto;
-  column-gap: var(--gutter);
-  align-items: baseline;
-  padding-top: 18px;
-  font-size: clamp(18px, 1.6vw, 26px);
-}
-
-.honours__item .rule {
-  grid-column: 1 / -1;
-  margin-top: 18px;
-  background: var(--line);
-}
-
-.honours__org {
-  color: var(--mute);
-  text-align: right;
-}
-
 /* ── Travel ───────────────────────────────────────────────── */
 
 .travel {
@@ -1217,11 +1182,6 @@ html.nav-paper .nav {
   .c-focus { grid-column: 1 / -1; }
   .edu__cells .c-focus { color: var(--mute); }
 
-  .honours__label,
-  .honours__list { grid-column: 1 / -1; }
-  .honours__label { margin-bottom: 12px; }
-  .honours__item { grid-template-columns: 56px 1fr; }
-  .honours__org { grid-column: 2; text-align: left; font-size: 11px; }
 
   .travel { padding-bottom: clamp(64px, 12vw, 120px); }
   .travel__pin { display: block; height: auto; }

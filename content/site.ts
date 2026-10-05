@@ -10,8 +10,6 @@ export type Education = {
   focus: string;
 };
 
-export type Honour = { year: string; title: string; org: string };
-
 export type Credit = { name: string; url: string };
 
 export type Place = {
@@ -65,7 +63,7 @@ export type Hobby = {
 export const site = {
   name: { first: "Kaustav", last: "Ghosh" },
   initials: "KG",
-  role: "Visual designer — brand, motion, 3D & code",
+  role: "Diadochus of broken dreams",
   intro:
     "I design identities that move and build the interfaces they live in. Grids, type and a lot of shaders.",
   tagline: "Adapt, Improvise and Align",
@@ -86,7 +84,7 @@ export const site = {
   academia: {
     title: "Academia",
     intro:
-      "Kolkata, then Bangalore, then Exeter. Computer science first, then research in generative AI and high-performance computing.",
+      "Three cities, three schools, and the long way round.",
     education: [
       {
         years: "2022 — 2023",
@@ -110,13 +108,6 @@ export const site = {
         focus: "School years",
       },
     ] as Education[],
-    honours: [
-      { year: "2023", title: "MSc with Merit", org: "University of Exeter" },
-      { year: "2023", title: "Research — Generative AI & HPC (96M-point Mandelbrot on MPI)", org: "University of Exeter" },
-      { year: "2020", title: "CSR Excellence Award — 460+ volunteer hours", org: "TresVista" },
-      { year: "Cert.", title: "Retrieval Augmented Generation (RAG)", org: "DeepLearning.AI" },
-      { year: "Cert.", title: "Claude 101 · Claude Code in Action · AI Fluency", org: "Anthropic" },
-    ] as Honour[],
   },
 
   travel: {
