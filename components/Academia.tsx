@@ -60,7 +60,7 @@ export default function Academia() {
               <Rule />
               <span className="edu__fill" />
               <span className="edu__ghost display" aria-hidden="true">
-                {e.years.slice(0, 4)}
+                {e.years.match(/\d{4}/)?.[0]}
               </span>
               <div className="edu__cells grid">
                 <span className="cell c-no mono"><span>{String(i + 1).padStart(2, "0")}</span></span>
